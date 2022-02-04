@@ -1,9 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
+const Users = require('../controllers/Users');
 
-router.get('/', async (req, resp) => {
-  return resp.status(200).json({ message: 'Funciona !!!' });
-});
+router.post('/', Users.createUser);
 
 module.exports = router;
