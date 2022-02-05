@@ -1,8 +1,9 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const isDisplayNameValid = require('../helpers/isDisplayNameValid');
-const isEmailValid = require('../helpers/isEmailValid');
+const isEmailValidCreate = require('../helpers/isEmailValidCreate');
 const isPasswordValid = require('../helpers/isPasswordValid');
+const isEmailValidLogin = require('../helpers/isEmailValidlogin');
 
 const { Users } = require('../models');
 
@@ -13,7 +14,7 @@ const createUser = async (displayName, email, password, image) => {
   try {
     const nameValidation = isDisplayNameValid(displayName);
     const passwordValidation = isPasswordValid(password);
-    const emailValidation = await isEmailValid(email);
+    const emailValidation = await isEmailValidCreate(email);
     
     if (nameValidation !== true) return nameValidation;
     if (emailValidation !== true) return emailValidation;
@@ -21,8 +22,23 @@ const createUser = async (displayName, email, password, image) => {
 
     await Users.create({ displayName, email, password, image });
    
-    const token = jwt.sign({ data: displayName }, secret, jwtConfig);
+    const token = jwt.sign({ data: email }, secret, jwtConfig);
     return { status: 201, response: { token } };
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const loginUser = async (email, password) => {
+  try {
+    const passwordValidation = isPasswordValid(password);
+    const emailValidation = await isEmailValidLogin(email);
+    
+    if (emailValidation !== true) return emailValidation;
+    if (passwordValidation !== true) return passwordValidation;
+   
+    const token = jwt.sign({ data: email }, secret, jwtConfig);
+    return { status: 200, response: { token } };
   } catch (error) {
     console.log(error.message);
   }
@@ -30,4 +46,5 @@ const createUser = async (displayName, email, password, image) => {
 
 module.exports = {
   createUser,
+  loginUser,
 };
