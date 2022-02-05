@@ -6,6 +6,7 @@ const isPasswordValid = require('../helpers/isPasswordValid');
 const isEmailValidLogin = require('../helpers/isEmailValidlogin');
 
 const { Users } = require('../models');
+const isTokenIsValid = require('../controllers/isTokenIsValid');
 
 const secret = process.env.JWT_SECRET;
 const jwtConfig = { expiresIn: '7d', algorithm: 'HS256' };
@@ -44,7 +45,18 @@ const loginUser = async (email, password) => {
   }
 };
 
+const getAllUsers = async (token) => {
+  const validToken = await isTokenIsValid(token);
+
+  if (validToken !== true) return validToken;
+
+  const allUsers = await Users.findAll();
+
+  return { status: 200, response: allUsers };
+};
+
 module.exports = {
   createUser,
   loginUser,
+  getAllUsers,
 };
