@@ -4,7 +4,7 @@ const { Users } = require('../models');
 const secret = process.env.JWT_SECRET;
 
 module.exports = async (token) => {
-  if (token === undefined) return { status: 401, response: { message: 'Token not found' } };
+  if (!token) return { status: 401, response: { message: 'Token not found' } };
   try {
     const decoded = jwt.verify(token, secret);
 
