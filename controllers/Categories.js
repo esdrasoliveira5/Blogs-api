@@ -1,4 +1,4 @@
-const categories = require('../services/categories');
+const categories = require('../services/Categories');
 
 const createCategories = async (req, resp) => {
   const { authorization } = req.headers;
@@ -9,6 +9,15 @@ const createCategories = async (req, resp) => {
   return resp.status(status).json(response);
 };
 
+const getAllCategories = async (req, resp) => {
+  const { authorization } = req.headers;
+
+  const { status, response } = await categories.getAllCategories(authorization);
+
+  return resp.status(status).json(response);
+};
+
 module.exports = {
   createCategories,
+  getAllCategories,
 };

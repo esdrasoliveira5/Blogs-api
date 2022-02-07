@@ -15,6 +15,18 @@ const createCategories = async (token, name) => {
   }
 };
 
+const getAllCategories = async (token) => {
+  const validToken = await isTokenIsValid(token);
+  if (validToken !== true) return validToken;
+  try {
+    const allCategories = await Categories.findAll();
+    return { status: 200, response: allCategories };
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 module.exports = {
   createCategories,
+  getAllCategories,
 };
