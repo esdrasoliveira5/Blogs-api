@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const userRouter = require('./router/userRouter');
 const categoriesRouter = require('./router/categoriesRouter');
+const blogPostsRouter = require('./router/blogPostsRouter');
 const Users = require('./controllers/Users');
 
 const app = express();
@@ -17,6 +18,7 @@ app.post('/login', Users.loginUser);
 
 app.use('/categories', categoriesRouter);
 
+app.use('/post', blogPostsRouter);
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
