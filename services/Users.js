@@ -6,7 +6,7 @@ const isPasswordValid = require('../helpers/isPasswordValid');
 const isEmailValidLogin = require('../helpers/isEmailValidlogin');
 
 const { Users } = require('../models');
-const isTokenIsValid = require('../controllers/isTokenIsValid');
+const isTokenIsValid = require('../helpers/isTokenIsValid');
 
 const secret = process.env.JWT_SECRET;
 const jwtConfig = { expiresIn: '7d', algorithm: 'HS256' };
@@ -55,8 +55,21 @@ const getAllUsers = async (token) => {
   return { status: 200, response: allUsers };
 };
 
+const getUserById = async (token, id) => {
+  const validToken = await isTokenIsValid(token);
+
+  if (validToken !== true) return validToken;
+
+  const user = await Users.findByPk(id);
+
+  if (!user) return { status: 404, response: { message: 'User does not exist' } };
+
+  return { status: 200, response: user };
+};
+
 module.exports = {
   createUser,
   loginUser,
   getAllUsers,
+  getUserById,
 };
