@@ -23,7 +23,7 @@ const createBlogPosts = async (token, title, content, categoryIds) => {
   }
 };
 
-const getAllblogPosts = async (token) => {
+const getAllBlogPosts = async (token) => {
   const validToken = await isTokenIsValid(token);
 
   if (validToken !== true) return validToken;
@@ -38,7 +38,26 @@ const getAllblogPosts = async (token) => {
   return { status: 200, response: allPosts };
 };
 
+const geBlogPostsById = async (token, id) => {
+  const validToken = await isTokenIsValid(token);
+
+  if (validToken !== true) return validToken;
+
+  const posts = await BlogPosts.findOne({
+    where: { id },
+    include: [
+      { model: Users, as: 'user' },
+      { model: Categories, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!posts) return { status: 404, response: { message: 'Post does not exist' } };
+
+  return { status: 200, response: posts };
+};
+
 module.exports = {
   createBlogPosts,
-  getAllblogPosts,
+  getAllBlogPosts,
+  geBlogPostsById,
 };

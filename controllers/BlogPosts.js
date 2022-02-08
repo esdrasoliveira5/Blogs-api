@@ -22,7 +22,17 @@ const getAllblogPosts = async (req, resp) => {
   return resp.status(status).json(response);
 };
 
+const geBlogPostsById = async (req, resp) => {
+  const { authorization } = req.headers;
+  const { id } = req.params;
+
+  const { status, response } = await BlogPosts.geBlogPostsById(authorization, id);
+
+  return resp.status(status).json(response);
+};
+
 module.exports = {
   createBlogPosts,
   getAllblogPosts,
+  geBlogPostsById,
 };
