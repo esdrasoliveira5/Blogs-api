@@ -10,8 +10,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.listen(3000, () => console.log('ouvindo porta 3000!'));
-
 app.use('/user', userRouter);
 
 app.post('/login', Users.loginUser);
@@ -23,3 +21,5 @@ app.use('/post', blogPostsRouter);
 app.get('/', (request, response) => {
   response.send();
 });
+
+app.listen(3000, () => console.log('ouvindo porta 3000!'));

@@ -14,25 +14,44 @@ const createBlogPosts = async (req, resp) => {
     return resp.status(status).json(response);
 };
 
-const getAllblogPosts = async (req, resp) => {
+const getAllBlogPosts = async (req, resp) => {
   const { authorization } = req.headers;
 
-  const { status, response } = await BlogPosts.getAllblogPosts(authorization);
+  const { status, response } = await BlogPosts.getAllBlogPosts(authorization);
 
   return resp.status(status).json(response);
 };
 
-const geBlogPostsById = async (req, resp) => {
+const getBlogPostsById = async (req, resp) => {
   const { authorization } = req.headers;
   const { id } = req.params;
 
-  const { status, response } = await BlogPosts.geBlogPostsById(authorization, id);
+  const { status, response } = await BlogPosts.getBlogPostsById(authorization, id);
+
+  return resp.status(status).json(response);
+};
+
+const updateBlogPostsById = async (req, resp) => {
+  const { authorization: token } = req.headers;
+  const { id } = req.params;
+  const { title, content, categoryIds } = req.body;
+
+  const values = {
+    token, 
+    id, 
+    title, 
+    content, 
+    categoryIds,
+  };
+
+  const { status, response } = await BlogPosts.updateBlogPostsById(values);
 
   return resp.status(status).json(response);
 };
 
 module.exports = {
   createBlogPosts,
-  getAllblogPosts,
-  geBlogPostsById,
+  getAllBlogPosts,
+  getBlogPostsById,
+  updateBlogPostsById,
 };
