@@ -70,12 +70,31 @@ const updateBlogPostsById = async ({ token, id, title, content, categoryIds }) =
   }
 
   await BlogPosts.update({ title, content }, { where: { id } });
-  const posts2 = await BlogPosts.findOne({ 
+  const updatedPost = await BlogPosts.findOne({ 
     where: { id },
     include: { model: Categories, as: 'categories', through: { attributes: [] } },
   });
 
-  return { status: 200, response: posts2 };
+  return { status: 200, response: updatedPost };
+};
+
+const deletePostById = async (token, id) => {
+  const validToken = await isTokenIsValid(token);
+  if (validToken !== true) return validToken;
+
+  const posts = await BlogPosts.findOne({ where: { id } });
+  if (!posts) return { status: 404, response: { message: 'Post does not exist' } };
+  
+  const decoded = jwt.verify(token, secret);
+  const userID = await Users.findOne({ where: { email: decoded.data } });
+
+  if (posts.dataValues.id !== userID.dataValues.id) {
+    return { status: 401, response: { message: 'Unauthorized user' } };
+  }
+
+  await BlogPosts.destroy({ where: { id } });
+
+  return { status: 204, response: '' };
 };
 
 module.exports = {
@@ -83,4 +102,5 @@ module.exports = {
   getAllBlogPosts,
   getBlogPostsById,
   updateBlogPostsById,
+  deletePostById,
 };

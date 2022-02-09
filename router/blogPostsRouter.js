@@ -10,6 +10,7 @@ router.post('/', rescue(BlogPosts.createBlogPosts));
 router.get('/', rescue(BlogPosts.getAllBlogPosts));
 router.get('/:id', rescue(BlogPosts.getBlogPostsById));
 router.put('/:id', rescue(BlogPosts.updateBlogPostsById));
+router.delete('/:id', rescue(BlogPosts.deletePostById));
 
 router.use(ErrorHanldeBlogPosts);
 
