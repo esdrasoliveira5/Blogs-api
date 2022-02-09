@@ -62,8 +62,6 @@ const getBlogPostsBySearchTerm = async (req, resp) => {
   const { authorization } = req.headers;
   const { q } = req.query;
 
-  console.log(q);
-  console.log('AQUI!!!!!!!!!!!!!');
   const { status, response } = await BlogPosts.getBlogPostsBySearchTerm(authorization, q);
 
   return resp.status(status).json(response);

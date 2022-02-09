@@ -1,5 +1,4 @@
 module.exports = (password) => {
-  console.log(password);
   if (password === undefined) {
     return { status: 400, response: { message: '"password" is required' } };
   }

@@ -12,7 +12,6 @@ module.exports = async (token) => {
   
     if (!user) return { status: 401, response: { message: 'Expired or invalid token' } };
   } catch (error) {
-    console.log(error.message);
     return { status: 401, response: { message: 'Expired or invalid token' } };
   }
   return true;
