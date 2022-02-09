@@ -8,10 +8,10 @@ const router = express.Router();
 
 router.post('/', rescue(BlogPosts.createBlogPosts));
 router.get('/', rescue(BlogPosts.getAllBlogPosts));
-// router.get('/:id', rescue(BlogPosts.getBlogPostsById));
+router.get('/search', rescue(BlogPosts.getBlogPostsBySearchTerm));
+router.get('/:id', rescue(BlogPosts.getBlogPostsById));
 router.put('/:id', rescue(BlogPosts.updateBlogPostsById));
 router.delete('/:id', rescue(BlogPosts.deletePostById));
-router.get('/search', rescue(BlogPosts.getBlogPostsBySearchTerm));
 
 router.use(ErrorHanldeBlogPosts);
 
