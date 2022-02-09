@@ -59,9 +59,22 @@ const getUserById = async (token, id) => {
   return { status: 200, response: user };
 };
 
+const deleteUser = async (token) => {
+  const validToken = await isTokenIsValid(token);
+
+  if (validToken !== true) return validToken;
+
+  const decoded = jwt.verify(token, secret);
+
+  await Users.destroy({ where: { email: decoded.data } });
+
+  return { status: 204, response: '' };
+};
+
 module.exports = {
   createUser,
   loginUser,
   getAllUsers,
   getUserById,
+  deleteUser,
 };

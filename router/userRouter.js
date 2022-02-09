@@ -9,6 +9,7 @@ const { ErrorHanldeUsers } = require('../middlewares/ErrorHanldeUsers');
 router.post('/', rescue(Users.createUser));
 router.get('/', rescue(Users.getAllUsers));
 router.get('/:id', rescue(Users.getUserById));
+router.delete('/me', rescue(Users.deleteUser));
 
 router.use(ErrorHanldeUsers);
 module.exports = router;
