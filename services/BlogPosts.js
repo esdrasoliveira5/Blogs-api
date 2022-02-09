@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 const isTokenIsValid = require('../helpers/isTokenIsValid');
 const isValidBlogPostsEditValues = require('../helpers/isValidBlogPostsEditValues');
 const isValidBlogPostsValues = require('../helpers/isValidBlogPostsValues');
@@ -97,10 +98,30 @@ const deletePostById = async (token, id) => {
   return { status: 204, response: '' };
 };
 
+const getBlogPostsBySearchTerm = async (token, query) => {
+  const validToken = await isTokenIsValid(token);
+  if (validToken !== true) return validToken;
+
+  const posts = await BlogPosts.findAll({
+    where: { [Op.or]: [
+      { title: { [Op.substring]: query } }, { content: { [Op.substring]: query } },
+    ] },
+    include: [
+      { model: Users, as: 'user' },
+      { model: Categories, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!posts) return { status: 404, response: { message: 'Post does not exist' } };
+
+  return { status: 200, response: posts };
+};
+
 module.exports = {
   createBlogPosts,
   getAllBlogPosts,
   getBlogPostsById,
   updateBlogPostsById,
   deletePostById,
+  getBlogPostsBySearchTerm,
 };
