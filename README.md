@@ -10,16 +10,16 @@
   - [Verifica o estado da Api](#Verifica-o-estado-da-Api)
   - [Registrar usuário](#Registrar-usuário)
   - [Login](#Login) 
+  - [Lista todos os usuário](#Lista-todos-os-usuário)
   - [Lista um usuário](#Lista-um-usuário)
+  - [Cria uma categoria](#Cria-uma-categoria)
+  - [Lista todas as categorias](#Lista-todas-as-categorias)
   - [Editar um usuário](#Editar-um-usuário)
-  - [Deleta um usuário](#Deleta-um-usuário)
-  - [Cria uma tarefa](#Cria-uma-tarefa)
-  - [Lista todas as tarefas criadas](#Lista-todas-as-tarefas-criadas)
-  - [Lista uma tarefa especifica](#Lista-uma-tarefa-especifica)
-  - [Listar todas as tarefas de acordo com a categoria](#Listar-todas-as-tarefas-de-acordo-com-a-categoria)
-  - [Atualizar uma tarefa](#Atualizar-uma-tarefa)
-  - [Atualizar a categoria de uma tarefa](#Atualizar-a-categoria-de-uma-tarefa)
-  - [Deletar uma tarefa](#Deletar-uma-tarefa)
+  - [Lista todos os Blogposts](#Lista-todos-os-Blogposts)
+  - [Lista um Blogpost pelo id](#Lista-um-Blogpost-pelo-id)
+  - [Atualiza um Blogpost pelo id](#Atualiza-um-Blogpost-pelo-id)
+  - [Deleta um BlogPost](#Deleta-um-BlogPost)
+  - [Pesquisa por um BlogPost](#Pesquisa-por-um-BlogPost)
 
 
 <br>
@@ -428,7 +428,7 @@
   <br/>
 
 
-### **Atualizar uma tarefa**
+### **Pesquisa por um BlogPost**
 ##### `GET` post/search?q=:searchTerm
   <br/>
 
