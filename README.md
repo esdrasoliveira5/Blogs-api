@@ -1,4 +1,4 @@
-# to-do list backend Api
+# Blogs Api
 
 ## Sumário
 
@@ -44,27 +44,32 @@
 
 - Clone o repositório
   ```sh
-    git clone git@github.com:esdrasoliveira5/to-do-list-backend.git
+    git clone git@github.com:esdrasoliveira5/Blogs-api.git
 - Vá para a pasta da aplicação
   ```sh
-    cd to-do-list-backend
+    cd Blogs-api
 - Configure o arquivo .env (use o arquivo .env.example como guia)
 
 ## Instruções para iniciar o projeto
 
 <br>
 
-- Comando para iniciar
+- Comando para instalar as dependencias
   ```sh
-    docker image build -t todobackend .
+  npm install
 
-- Comando para inserir as tabelas no banco de dados
+- Comando para criar o banco de dados e inserir as tabelas
   ```sh
-    npx sequelize db:migrate   
+    npm run prestart
 
-- Comando para inserir as categorias na tabela
+- Comando para iniciar a aplicacao
   ```sh
-    npx sequelize db:seed:all
+    npm run start
+
+- Comando para iniciar a aplicacao em modo de desenvolvimento
+  ```sh
+    npm run debug
+
 <br/>
 
 ## Documentação
@@ -72,15 +77,15 @@
 <br/>
 
 ### **Verifica o estado da Api**
-##### `GET` /
+##### `POST` /user
 <br/>
 
-  Esse endpoint verifica se a Api esta online e retorna um objeto com a mensagem `Api to-do list online!!`
+  Esse endpoint verifica se a Api esta online e retorna um objeto com a mensagem `'Api Blogs Online!!`
 
   - Exemplo `response body`
     ```json
       {
-          "message": "Api to-do list online!!"
+          "message": "'Api Blogs Online!!"
       }
     ```
   <br/>
@@ -89,22 +94,22 @@
 ##### `POST` /user
 <br/>
 
-  Esse endpoint registra um usuário e retorna um objeto com a menssagem.
+  Esse endpoint registra um usuário e retorna um objeto com um token.
 
   - Exemplo `request body` 
     ``` json
       {
-          "name": "name",
-          "lastName": "lastname",
-          "email": "exemple@email.com",
-          "password": "12345678"
+        "displayName": "Brett Wiltshire",
+        "email": "brett@email.com",
+        "password": "123456",
+        "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
       }
     ```
 
   - Exemplo `response body`
     ```json
       {
-        "message": "User created"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjo1LCJkaXNwbGF5TmFtZSI6InVzdWFyaW8gZGUgdGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImltYWdlIjoibnVsbCJ9LCJpYXQiOjE2MjAyNDQxODcsImV4cCI6MTYyMDY3NjE4N30.Roc4byj6mYakYqd9LTCozU1hd9k_Vw5IWKGL4hcCVG8"
       }
     ```
 <br/>
@@ -113,7 +118,7 @@
 ##### `POST` /login
   <br/>
 
-  Esse endpoint valida o login do usuário e retorna um objeto com o id do usuario e o token de acesso dele.
+  Esse endpoint valida o login do usuário e retorna um objeto com um  token.
 
   - Exemplo `request body` 
     ``` json
@@ -126,17 +131,16 @@
   - Exemplo `response body`
     ```json
       {
-          "userId": 26,
           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXhlbXBsZUBlbWFpbC5jb20iLCJpYXQiOjE2NDUxNDI0NzksImV4cCI6MTY0NTc0NzI3OX0.sRZtnLnkGYHjhFBXJISTcX41QbvpGxll-wUnU-kGxyE"
       }
     ```
   <br/>
 
-### **Lista um usuário**
-##### `GET` /user/:id
+### **Lista todos os usuário**
+##### `GET` /user
   <br/>
 
-  Esse endpoint busca um usuario cadastrado pelo id.
+  Esse endpoint lista todos os usuários cadastrados.
 
   - Exemplo `request headers`
       ```json
@@ -147,25 +151,104 @@
 
   - Exemplo `response body`
     ```json
+      [
+        {
+          "id": "401465483996",
+          "displayName": "Brett Wiltshire",
+          "email": "brett@email.com",
+          "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+        }
+      ]
+    ```
+  <br/>
+
+### **Lista um usuário**
+##### `GET` /user/:id
+  <br/>
+
+  Esse endpoint busca um usuário cadastrado pelo id.
+
+  - Exemplo `request headers`
+      ```json
       {
-          "id": 26,
-          "name": "name",
-          "lastName": "lastname",
-          "email": "exemple@email.com",
-          "password": "12345678",
-          "created": "2022-02-17T23:53:25.727Z",
-          "tasks": []
+        "Authorization": "(Bearer Token)"
       }
+      ```
+
+  - Exemplo `response body`
+    ```json
+        {
+          "id": "401465483996",
+          "displayName": "Brett Wiltshire",
+          "email": "brett@email.com",
+          "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+        }
+    ```
+  <br/>
+
+### **Cria uma categoria**
+##### `POST` /categories
+  <br/>
+
+  Esse endpoint recebe uma Categoria no corpo da requisição e o cria no banco.
+
+  - Exemplo `request headers`
+      ```json
+      {
+        "Authorization": "(Bearer Token)"
+      }
+      ```
+
+  - Exemplo `request body` 
+    ``` json
+      {
+        "name": "Inovação"
+      }
+    ```
+
+
+  - Exemplo `response body`
+    ```json
+        {
+          "id": "1",
+          "name": "Inovação",
+        }
+    ```
+  <br/>
+
+### **Lista todas as categorias**
+##### `GET` /categories
+  <br/>
+
+  Esse endpoint lista todas as Categorias e as retorna dentro de um array.
+
+  - Exemplo `request headers`
+      ```json
+      {
+        "Authorization": "(Bearer Token)"
+      }
+      ```
+
+  - Exemplo `response body`
+    ```json
+      [
+        {
+          "id": 1,
+          "name": "Escola"
+        },
+        {
+          "id": 2,
+          "name": "Inovação"
+        }
+      ]
     ```
   <br/>
 
 ### **Editar um usuário**
-##### `PUT` /user/:id
+##### `POST` /post
   <br/>
 
-  Esse endpoint atualiza um usuario com o ID fornecido na rota e retorna um objeto com os dados atualizados.
-
-  *Obs: Apenas o usuário que criou o usuario pode atualizar.*
+  Esse endpoint deve receber um BlogPost no corpo da requisição e criá-lo no banco.
 
   - Exemplo `request headers`
     ```json
@@ -176,195 +259,180 @@
 
   - Exemplo `request body` 
     ```json
+        {
+          "title": "Latest updates, August 1st",
+          "content": "The whole text for the blog post goes here in this key",
+          "categoryIds": [1, 2]
+        }
+    ```
+
+  - Exemplo `response body`
+    ```json
+        {
+          "id": 4,
+          "userId": 1,
+          "title": "Latest updates, August 1st",
+          "content": "The whole text for the blog post goes here in this key",
+        }
+    ```
+  <br/>
+
+### **Lista todos os Blogposts**
+##### `GET ` /post
+  <br/>
+
+  Esse endpoint deve listar todos os BlogPosts e retorná-los.
+
+  - Exemplo `request headers`
+    ```json
       {
-          "name": "name",
-          "lastName": "lastname",
-          "password": "12345678"
+        "Authorization": "(Bearer Token)"
       }
     ```
 
   - Exemplo `response body`
     ```json
+      [
+        {
+          "id": 1,
+          "title": "Post do Ano",
+          "content": "Melhor post do ano",
+          "userId": 1,
+          "published": "2011-08-01T19:58:00.000Z",
+          "updated": "2011-08-01T19:58:51.000Z",
+          "user": {
+            "id": 1,
+            "displayName": "Lewis Hamilton",
+            "email": "lewishamilton@gmail.com",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2017_Malaysia.jpg"
+          },
+          "categories": [
+            {
+              "id": 1,
+              "name": "Inovação"
+            }
+          ]
+        }
+      ]
+    ```
+  <br/>
+
+### **Lista um Blogpost pelo id**
+##### `GET` post/:id
+  <br/>
+
+  Retorna um BlogPost com o id especificado.
+
+  - Exemplo `request headers`
+    ```json
       {
-          "name": "name",
-          "lastName": "lastname",
-          "password": "12345678"
+        "Authorization": "(Bearer Token)"
+      }
+    ```
+
+  - Exemplo `response body`
+    ```json
+    {
+      "id": 1,
+      "title": "Post do Ano",
+      "content": "Melhor post do ano",
+      "userId": 1,
+      "published": "2011-08-01T19:58:00.000Z",
+      "updated": "2011-08-01T19:58:51.000Z",
+      "user": {
+        "id": 1,
+        "displayName": "Lewis Hamilton",
+        "email": "lewishamilton@gmail.com",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+      },
+      "categories": [
+        {
+          "id": 1,
+          "name": "Inovação"
+        }
+      ]
+    }
+    ```
+  <br/>
+
+### **Atualiza um Blogpost pelo id**
+##### `PUT` /post/:id
+  <br/>
+  
+  O endpoint deve receber um BlogPost que irá sobrescrever o original com o id especificado na URL.
+
+  *Obs: Apenas o usuario que criou as tarefas pode atualizar as tarefas.*
+  *A(s) categoria(s) do post não podem ser editadas, somente o title e content.*
+
+  - Exemplo `request headers`
+    ```json
+      {
+        "Authorization": "(Bearer Token)"
+      }
+    ```
+
+  - Exemplo `request body` 
+    ```json
+        {
+            "title": "Latest updates, August 1st",
+            "content": "The whole text for the blog post goes here in this key"
+        }
+    ```
+
+  - Exemplo `response body`
+    ```json
+      [
+          {
+            "title": "Latest updates, August 1st",
+            "content": "The whole text for the blog post goes here in this key",
+            "userId": 1,
+            "categories": {
+                "id": 1,
+                "name": "Escola"
+            }
+          }
+      ]
+    ```
+  <br/>
+
+### **Deleta um BlogPost**
+##### `DELETE` post/:id
+  <br/>
+
+  Deleta o post com o id especificado.Retorna apenas o status 204.
+
+  *Obs: Apenas o usuário que criou a tarefa pode deleta-la.*
+
+  - Exemplo `request headers`
+    ```json
+      {
+        "Authorization": "(Bearer Token)"
       }
     ```
   <br/>
 
 ### **Deleta um usuário**
-##### `DELETE` /user/:id
+##### `DELETE` /user/me
   <br/>
 
-  Esse endpoint deleta um usuario com o ID fornecido na rota e retorna um objeto com a mensagem `User deleted`.
+  Utilizando o token de autenticação nos headers, o usuário correspondente deve ser apagado. E retorna apenas o status 204.
 
-  *Obs: Apenas o usuário que criou o usuario pode deletar.*
+  *Obs: Apenas o usuário que criou o usuário pode deleta-lo.*
 
   - Exemplo `request headers`
     ```json
       {
         "Authorization": "(Bearer Token)"
       }
-    ```
-
-  - Exemplo `response body`
-    ```json
-      {
-          "message": "User deleted"
-      }
-    ```
-  <br/>
-
-### **Cria uma tarefa**
-##### `POST` /tasks
-  <br/>
-
-  Esse endpoint cria uma tarefa e retorna um objeto com a tarefa criada.
-
-  - Exemplo `request headers`
-    ```json
-      {
-        "Authorization": "(Bearer Token)"
-      }
-    ```
-  - Exemplo `request body` 
-    ``` json
-      {
-          "title": "title exemple",
-          "description": "description exemple",
-          "priority": "Alta",
-          "dateLimit": "2022-10-02"
-      }
-    ```
-
-  - Exemplo `response body`
-    ```json
-      {
-          "id": 71,
-          "title": "title exemple",
-          "description": "description exemple",
-          "priority": "Alta",
-          "dateLimit": "2022-10-02",
-          "userId": 26,
-          "created": "2022-02-18T00:44:02.803Z",
-          "categoryId": 1
-      }
-    ```
-  <br/>
-
-### **Lista todas as tarefas criadas**
-##### `GET` /tasks
-  <br/>
-  
-  Esse endpoint retorna todas as tarefas relacionadas a um usuario.
-
-  *Obs: Apenas o usuario que criou as tarefas pode pegar as tarefas.*
-
-  - Exemplo `request headers`
-    ```json
-      {
-        "Authorization": "(Bearer Token)"
-      }
-    ```
-
-  - Exemplo `response body`
-    ```json
-      [
-          {
-              "id": 71,
-              "title": "title exemple",
-              "description": "description exemple",
-              "priority": "Alta",
-              "dateLimit": "2022-10-02",
-              "userId": 26,
-              "created": "2022-02-18T00:44:02.803Z",
-              "categoryId": 1,
-              "categories": {
-                  "id": 1,
-                  "name": "Não iniciado"
-              }
-          }
-      ]
-    ```
-  <br/>
-
-### **Lista uma tarefa especifica**
-##### `POST` /tasks/:id
-  <br/>
-
-  Esse endpoint retorna uma terefa relacionada ao ID passado na rota.
-
-  *Obs: Apenas o usuário que criou a tarefa pode pegá-la .*
-
-  - Exemplo `request headers`
-    ```json
-      {
-        "Authorization": "(Bearer Token)"
-      }
-    ```
-  - Exemplo `response body`
-    ```json
-        {
-            "id": 71,
-            "title": "title exemple",
-            "description": "description exemple",
-            "priority": "Alta",
-            "dateLimit": "2022-10-02",
-            "userId": 26,
-            "created": "2022-02-18T00:44:02.803Z",
-            "categoryId": 1,
-            "categories": {
-                "id": 1,
-                "name": "Não iniciado"
-            }
-        }
-    ```
-  <br/>
-
-### **Listar todas as tarefas de acordo com a categoria**
-##### `GET` tasks/category/:id
-  <br/>
-
-  Esse endpoint retorna todas as tarefas criadas pelo usuário relacionadas ao ID da categoria passado na rota.
-
-  *Obs: Apenas o usuário que criou as tarefas pode visualizar.*
-
-  - Exemplo `request headers`
-    ```json
-      {
-        "Authorization": "(Bearer Token)"
-      }
-    ```
-  - Exemplo `response body`
-    ```json
-      [
-          {
-              "id": 71,
-              "title": "title exemple",
-              "description": "description exemple",
-              "priority": "Alta",
-              "dateLimit": "2022-10-02",
-              "userId": 26,
-              "created": "2022-02-18T00:44:02.803Z",
-              "categoryId": 1,
-              "categories": {
-                  "id": 1,
-                  "name": "Não iniciado"
-              }
-          }
-      ]
     ```
   <br/>
 
 
 ### **Atualizar uma tarefa**
-##### `PUT` /tasks/:id
+##### `GET` post/search?q=:searchTerm
   <br/>
 
-  Esse endpoint é responsável por atualizar uma tarefa com o ID fornecido na rota e retorna um objeto com as informacoes atualizadas.
-
-  *Obs: Apenas o usuário que criou as tarefas pode atualizar.*
+  Retorna uma array de BlogPosts que contenham em seu título, ou conteúdo, o termo pesquisado no queryParam da URL.
 
   - Exemplo `request headers`
     ```json
@@ -372,76 +440,30 @@
         "Authorization": "(Bearer Token)"
       }
     ```
-  - Exemplo `request body`
-    ```json
-      {
-          "title": "title exemple",
-          "description": "description exemple",
-          "priority": "Baixa",
-          "dateLimit": "2022-10-02"
-      }
-    ```
 
   - Exemplo `response body`
     ```json
-      {
-          "title": "title exemple",
-          "description": "description exemple",
-          "priority": "baixa",
-          "dateLimit": "2022-10-02"
-      }
+      [
+        {
+          "id": 2,
+          "title": "Vamos que vamos",
+          "content": "Foguete não tem ré",
+          "userId": 1,
+          "published": "2011-08-01T19:58:00.000Z",
+          "updated": "2011-08-01T19:58:51.000Z",
+          "user": {
+            "id": 1,
+            "displayName": "Lewis Hamilton",
+            "email": "lewishamilton@gmail.com",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg"
+          },
+          "categories": [
+            {
+              "id": 2,
+              "name": "Escola"
+            }
+          ]
+        }
+      ]
     ``` 
-  <br/>
-
-
-### **Atualizar a categoria de uma tarefa**
-##### `PUT` /category/:id
-  <br/>
-
-  Esse endpoint é responsável por atualizar a categoria de uma tarefa com o ID fornecido na rota e retorna um objeto com a mensagem `Task updated`.
-
-  *Obs: Apenas o usuário que criou as tarefas pode atualizar.*
-
-  - Exemplo `request headers`
-    ```json
-      {
-        "Authorization": "(Bearer Token)"
-      }
-    ```
-  - Exemplo `request body`
-    ```json
-      {
-          "categoryId": 1,
-      }
-    ```
-
-  - Exemplo `response body`
-    ```json
-      {
-          "message": "Task updated"
-      }
-    ``` 
-  <br/>
-
-### **Deletar uma tarefa**
-##### `DELETE` /tasks/:id
-  <br/>
-
-  Esse endpoint é responsável por deletar uma tarefa com o ID fornecido na rota e retorna um objeto com a mensagem `Task deleted`.
-
-  *Obs: Apenas o usuário que criou a tarefa pode deletar.*
-
-  - Exemplo `request headers`
-    ```json
-      {
-        "Authorization": "(Bearer Token)"
-      }
-    ```
-
-  - Exemplo `response body`
-    ```json
-      {
-          "message": "Task deleted"
-      }
-    ```
   <br/>

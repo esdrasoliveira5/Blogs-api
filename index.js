@@ -10,6 +10,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.get('/', (_request, response) => response.status(200).json({ message: 'Api Blogs Online!!' }));
+
 app.use('/user', userRouter);
 
 app.post('/login', Users.loginUser);
